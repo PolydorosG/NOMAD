@@ -1,0 +1,299 @@
+@startuml
+class Privileges {
+  PrivilegeID: INT
+  PrivilegeName: VARCHAR(50)
+  AddedBy: INT
+  AddedOn: DATETIME
+  ModifiedBy: INT
+  ModifiedOn: DATETIME
+}
+class PurchaseOrderStatuses {
+  StatusID: INT
+  StatusName: VARCHAR(50)
+  SortOrder: VARCHAR(50)
+  AddedBy: INT
+  AddedOn: DATETIME
+  ModifiedBy: INT
+  ModifiedOn: DATETIME
+}
+class Titles {
+  Title: VARCHAR(50)
+  AddedBy: INT
+  AddedOn: DATETIME
+  ModifiedBy: INT
+  ModifiedOn: DATETIME
+}
+class OrderDetailStatuses {
+  OrderDetailStatusID: INT
+  OrderDetailStatusName: VARCHAR(50)
+  AddedBy: INT
+  AddedOn: DATETIME
+  ModifiedBy: INT
+  ModifiedOn: DATETIME
+}
+class OrderStatuses {
+  OrderStatusID: INT
+  OrderStatusName: VARCHAR(50)
+  AddedBy: INT
+  AddedOn: DATETIME
+  ModifiedBy: INT
+  ModifiedOn: DATETIME
+}
+class TaxStatuses {
+  TaxStatusID: INT
+  TaxStatus: VARCHAR(50)
+  AddedBy: INT
+  AddedOn: DATETIME
+}
+class States {
+  StateAbbrev: VARCHAR(10)
+  StateName: VARCHAR(50)
+}
+class ProductCategories {
+  ProductCategoryID: INT
+  ProductCategoryName: VARCHAR(100)
+  ProductCategoryCode: VARCHAR(50)
+  ProductCategoryDesc: TEXT
+  ProductCategoryImage: BLOB
+  AddedBy: INT
+  AddedOn: DATETIME
+  ModifiedBy: INT
+  ModifiedOn: DATETIME
+}
+class Products {
+  ProductID: INT
+  ProductCode: VARCHAR(50)
+  ProductName: VARCHAR(100)
+  ProductDescription: TEXT
+  StandardUnitCost: DECIMAL(10, 2)
+  UnitPrice: DECIMAL(10, 2)
+  ReorderLevel: INT
+  TargetLevel: INT
+  QuantityPerUnit: VARCHAR(50)
+  Discontinued: BOOLEAN
+  MinimumReorderQuantity: INT
+  ProductCategoryID: INT
+  AddedBy: INT
+  AddedOn: DATETIME
+  ModifiedBy: INT
+  ModifiedOn: DATETIME
+}
+class StockTakes {
+  StockTakeID: INT
+  StockTakeDate: DATE
+  ProductID: INT
+  QuantityOnHand: INT
+  ExpectedQuantity: INT
+  AddedBy: INT
+  AddedOn: DATETIME
+  ModifiedBy: INT
+  ModifiedOn: DATETIME
+}
+class CompanyTypes {
+  CompanyTypeID: INT
+  CompanyType: VARCHAR(50)
+  AddedBy: INT
+  AddedOn: DATETIME
+  ModifiedBy: INT
+  ModifiedOn: DATETIME
+}
+class Companies {
+  CompanyID: INT
+  CompanyName: VARCHAR(100)
+  CompanyTypeID: INT
+  BusinessPhone: VARCHAR(20)
+  Address: TEXT
+  City: VARCHAR(50)
+  StateAbbrev: VARCHAR(10)
+  Zip: VARCHAR(10)
+  Website: VARCHAR(100)
+  StandardTaxStatusID: INT
+  AddedBy: INT
+  AddedOn: DATETIME
+  ModifiedBy: INT
+  ModifiedOn: DATETIME
+}
+
+class Customers
+class Vendors
+class Shippers
+
+' Companies are eithe clients, vendors or shippers 
+Customers --|> Companies
+Vendors --|> Companies
+Shippers --|> Companies
+
+class Employees {
+  EmployeeID: INT
+  FirstName: VARCHAR(50)
+  LastName: VARCHAR(50)
+  EmailAddress: VARCHAR(100)
+  JobTitle: VARCHAR(50)
+  PrimaryPhone: VARCHAR(20)
+  SecondaryPhone: VARCHAR(20)
+  Notes: TEXT
+  SupervisorID: INT
+  Title: VARCHAR(50)
+  AddedBy: INT
+  AddedOn: DATETIME
+  ModifiedBy: INT
+  ModifiedOn: DATETIME
+}
+class Orders {
+  OrderID: INT
+  EmployeeID: INT
+  CustomerID: INT
+  OrderDate: DATE
+  InvoiceDate: DATE
+  ShippedDate: DATE
+  ShipperID: INT
+  ShippingFee: DECIMAL(10, 2)
+  TaxRate: DECIMAL(5, 2)
+  TaxStatusID: INT
+  PaymentMethod: VARCHAR(50)
+  PaidDate: DATE
+  OrderStatusID: INT
+  AddedBy: INT
+  AddedOn: DATETIME
+  ModifiedBy: INT
+  ModifiedOn: DATETIME
+}
+class OrderDetails {
+  OrderDetailID: INT
+  OrderID: INT
+  ProductID: INT
+  Quantity: INT
+  UnitPrice: DECIMAL(10, 2)
+  Discount: DECIMAL(5, 2)
+  OrderDetailStatusID: INT
+  AddedBy: INT
+  AddedOn: DATETIME
+  ModifiedBy: INT
+  ModifiedOn: DATETIME
+}
+class PurchaseOrders {
+  PurchaseOrderID: INT
+  CompanyID: INT
+  StatusID: INT
+  SubmittedByEmployeeID: INT
+  ApprovedByEmployeeID: INT
+  OrderDate: DATE
+  AddedBy: INT
+  AddedOn: DATETIME
+  ModifiedBy: INT
+  ModifiedOn: DATETIME
+}
+
+class PurchaseOrderDetails {
+  PurchaseOrderDetailID: INT
+  PurchaseOrderID: INT
+  ProductID: INT
+  Quantity: INT
+  UnitPrice: DECIMAL(10,2)
+  AddedBy: INT
+  AddedOn: DATETIME
+  ModifiedBy: INT
+  ModifiedOn: DATETIME
+}
+class Contacts {
+  ContactID: INT
+  CompanyID: INT
+  FirstName: VARCHAR(50)
+  LastName: VARCHAR(50)
+  PrimaryPhone: VARCHAR(15)
+  SecondaryPhone: VARCHAR(15)
+  Notes: TEXT
+  JobTitle: VARCHAR(100)
+  EmailAddress: VARCHAR(100)
+  AddedBy: INT
+  AddedOn: DATETIME
+  ModifiedBy: INT
+  ModifiedOn: DATETIME
+}
+
+
+''''''''''Employees''''''''''
+' Employee has multiple priviledges 
+Employees "0..*" -- "0..*" Privileges : "has"
+
+' Employee holds 1 title 
+Employees "0..*" --> "1" Titles : "Holds title"
+
+' Self-association: An Employee reports to 1 Supervisor; a Supervisor may have >0 subordinates
+Employees "0..*" --> "1" Employees : "Reports to"
+
+' An Order is processed by one Employee
+Orders "0..*" --> "1" Employees : "Processed by"
+
+' A PurchaseOrder is submitted by one Employee
+PurchaseOrders "0..*" --> "1" Employees : "Submitted by" 
+
+' A PurchaseOrder is approved by one Employee
+PurchaseOrders "0..*" --> "1" Employees : "Approved by" 
+
+
+''''''''''Orders''''''''''
+' An Order uses one TaxStatus; a TaxStatus is used by 0..* Orders
+Orders "0..*" --> "1" TaxStatuses : "Uses tax status"
+
+' An Order is shipped by one Company (shipper); a Company ships 0..* Orders
+Orders "0..*" --> "1" Shippers : "Shipped by"
+
+' An Order has one OrderStatus; an OrderStatus applies to 0..* Orders
+Orders "0..*" --> "1" OrderStatuses : "Has status"
+
+'An Order is composed of 1..* OrderDetails; OrderDetail belongs exclusively to one Order
+Orders "1" *-- "1..*" OrderDetails : "Part of"
+
+' An Order is placed by one Company (Customer)
+Orders "0..*" --> "1" Customers : "Placed by" 
+
+
+''''''''''Companies''''''''''
+' A Company is classified as one CompanyType; a CompanyType classifies 0..* Companies
+Companies "0..*" --> "1" CompanyTypes : "Classified as"
+
+' A Company is located in one State; a State has 0..* Companies
+Companies "0..*" --> "1" States : "Located in"
+
+' A Company uses one TaxStatus; a TaxStatus is used by 0..* Companies
+Companies "0..*" --> "1" TaxStatuses : "Uses tax status"
+
+' A PurchaseOrder is sent to one Company (Vendor)
+PurchaseOrders "0..*" --> "1" Vendors : "Ordered from"
+
+' A Contact is associated with one Company; a Company can have 0..* Contacts
+Contacts "0..*" --> "1" Companies : "Associated with"
+
+'Vendors may supply multiple products; multiple products may have the same vendor
+Products "0..*" -- "0..*" Vendors : < supplies
+
+
+''''''''''Products''''''''''
+' Products belongs to one ProductCategory; a category has 0..* Products
+Products "0..*" --> "1" ProductCategories : "Belongs to"
+
+' Each StockTake record records inventory for one Product; a Product can have 0..* StockTake records
+StockTakes "0..*" --> "1" Products : "Records inventory of"
+
+' An OrderDetail includes one Product; a Product can appear in 0..* OrderDetails
+OrderDetails "0..*" --> "1" Products : "Includes"
+
+' A PurchaseOrderDetail contains one Product; a Product can appear in 0..* PurchaseOrderDetails
+PurchaseOrderDetails "0..*" --> "1" Products : "Contains"
+
+
+''''''''''Purchase Orders''''''''''
+' A PurchaseOrder has one PurchaseOrderStatus; a PurchaseOrderStatus applies to 0..* PurchaseOrders
+PurchaseOrders "0..*" --> "1" PurchaseOrderStatuses : "Has status"
+
+'A PurchaseOrder is composed of 1..* PurchaseOrderDetails; details belong exclusively to one PurchaseOrder
+PurchaseOrders "1" *-- "1..*" PurchaseOrderDetails : "Details of"
+
+
+''''''''''OrderDetails''''''''''
+' An OrderDetail has one OrderDetailStatus; an OrderDetailStatus is used by 0..* OrderDetails
+OrderDetails "0..*" --> "1" OrderDetailStatuses : "Has status"
+
+
+@enduml

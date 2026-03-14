@@ -1,0 +1,70 @@
+3. Functional Requirements
+3.1 Company Management
+FR-CM-01: The system shall maintain records of external organizations classified as either Customers, Vendors, or Shippers.
+FR-CM-02: The system shall maintain the hierarchical relationship where Customers, Vendors, and Shippers are separate entities inheriting from Companies.
+FR-CM-03: The system shall record Company information including name, phone number, address details, state, zip code and website.
+FR-CM-04: The system shall assign each Company to exactly one company type.
+FR-CM-05: The system shall associate each company with exactly one geographic state.
+FR-CM-06: The system shall assign a standard Tax Status to each company.
+FR-CM-07: The system shall allow multiple Contacts to be associated with a single company.
+FR-CM-08: The system shall maintain Contacts including first name, last name, primary and secondary phone numbers, email address, job title, and notes for each company contact.
+3.2 Employee Management
+FR-EM-01: The system shall maintain Employee records with personal information (first and last name, primary/secondary phone numbers) and professional information (job title, email).
+FR-EM-02: The system shall assign exactly one Title to each employee.
+FR-EM-03: The system shall support a hierarchical reporting structure where employees may report to one supervisor.
+FR-EM-04: The system shall allow one supervisor to manage multiple Employees.
+FR-EM-05: The system shall allow Employees to be assigned multiple privileges.
+3.3 Product Management
+FR-PM-01: The system shall maintain a Product catalog with product codes, names, descriptions, and pricing information.
+FR-PM-02: The system shall assign each product to exactly one Product Category.
+FR-PM-03: The system shall track standard unit cost and retail unit price for each product.
+FR-PM-04: The system shall monitor inventory levels including reorder level, target level, and minimum reorder quantity for each product.
+FR-PM-05: The system shall support marking products as discontinued.
+FR-PM-06: The system shall maintain Product Categories with names, codes, descriptions, and optional images.
+FR-PM-07: The system shall allow multiple Products to be supplied by multiple Vendors.
+3.4 Inventory Management
+FR-IM-01: The system shall support periodic Stock Takes to record and verify product inventory.
+FR-IM-02: The system shall record Stock Take information including date, product, quantity on hand, and expected quantity.
+FR-IM-03: The system shall calculate inventory discrepancies between expected and actual counts.
+3.5 Order Processing
+FR-SOP-01: The system shall record Customer Orders with dates, customer information, and shipping details.
+FR-SOP-02: The system shall enforce that each Order must be associated with exactly one Customer.
+FR-SOP-03: The system shall assign each Order to exactly one Employee who processes it.
+FR-SOP-04: The system shall track the Order Status using predefined order status values.
+FR-SOP-05: The system shall assign exactly one Shipper to each Order.
+FR-SOP-06: The system shall calculate and record tax information including tax rate and Tax Status for each order.
+FR-SOP-07: The system shall record invoice date, payment method, and payment date for financial reconciliation.
+FR-SOP-08: The system shall require each Order to contain one or more Order Detail items.
+FR-SOP-09: The system shall track product, quantity, unit price, and discount for each Order Detail item.
+FR-SOP-10: The system shall assign a Status to each Order Detail item using predefined status values.
+3.6 Purchase Order Processing
+FR-POP-01: The system shall manage Purchase Orders for acquiring products from Vendors.
+FR-POP-02: The system shall enforce that each Purchase Order must be associated with exactly one Vendor.
+FR-POP-03: The system shall record which Employee submitted each Purchase Order.
+FR-POP-04: The system shall record which Employee approved each Purchase Order.
+FR-POP-05: The system shall track the status of each Purchase Order using predefined Purchase Order Status values.
+FR-POP-06: The system shall record the order date for each Purchase Order.
+FR-POP-07: The system shall require each Purchase Order to contain one or more Purchase Order Detail items.
+FR-POP-08: The system shall track product, quantity, and unit price for each Purchase Order Detail item.
+4. Data Audit Requirements
+FR-DA-01: The system shall record which Employee added each record and when it was added.
+FR-DA-02: The system shall record which Employee last modified each record and when it was modified.
+5. Data Relationships
+DR-01: The system shall enforce that each Order Detail must be associated with exactly one Order.
+DR-02: The system shall enforce that each Purchase Order Detail must be associated with exactly one Purchase Order.
+DR-03: The system shall enforce that each Order Detail must reference exactly one Product.
+DR-04: The system shall enforce that each Purchase Order Detail must reference exactly one Product.
+6. Reference Data Requirements
+RD-01: The system shall maintain a catalog of Product Categories for classification of products.
+RD-02: The system shall maintain a list of Company Types for classification of companies.
+RD-03: The system shall maintain Order Statuses to track the status of orders.
+RD-04: The system shall maintain Order Detail Statuses to track the status of order line items.
+RD-05: The system shall maintain Purchase Order Statuses to track the status of purchase orders.
+RD-06: The system shall maintain Tax Status values for tax calculations.
+RD-07: The system shall maintain a list of States for geographic location information.
+RD-08: The system shall maintain a list of employee Titles.
+RD-09: The system shall maintain a list of Privileges that can be assigned to employees.
+7. Non-Functional Requirements
+NFR-01: All reference data tables shall include audit fields (AddedBy, AddedOn, ModifiedBy, ModifiedOn) to record the user and timestamp of record creation and last modification.
+NFR-02: All entities with relationships shall include foreign key attributes to enforce referential integrity. These foreign keys shall correspond to the primary keys of the related entities.
+NFR-03: All entity and attribute names shall follow a consistent naming convention, including the use of <EntityName>Id for foreign key attributes.
